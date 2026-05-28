@@ -482,7 +482,7 @@ function renderQuestion() {
   document.getElementById('qText').textContent = soal.q;
   const labels = ['A','B','C','D'];
   document.getElementById('optsList').innerHTML = soal.opts.map((o,i)=>`
-    <button class="opt-btn" onclick="answer(${i})" id="opt${i}">
+    <button class="opt-btn" onclick="answer(${i})" id="qopt${i}">
       <span class="opt-label">${labels[i]}</span><span>${o}</span>
     </button>`).join('');
   const fb = document.getElementById('feedbackCard');
@@ -525,8 +525,8 @@ function answer(idx) {
   const soal = state.shuffled[state.currentSoal];
   const correct = idx === soal.ans;
   document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
-  document.getElementById(`opt${idx}`).classList.add(correct?'correct':'wrong');
-  if(!correct) document.getElementById(`opt${soal.ans}`)?.classList.add('correct');
+  document.getElementById(`qopt${idx}`).classList.add(correct?'correct':'wrong');
+  if(!correct) document.getElementById(`qopt${soal.ans}`)?.classList.add('correct');
   const ba = document.getElementById('bombAnim');
   const fb = document.getElementById('feedbackCard');
   if(correct){
@@ -557,7 +557,7 @@ function autoWrong() {
   state.answered=true; state.salah++;
   const soal = state.shuffled[state.currentSoal];
   document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
-  document.getElementById(`opt${soal.ans}`)?.classList.add('correct');
+  document.getElementById(`qopt${soal.ans}`)?.classList.add('correct');
   const ba = document.getElementById('bombAnim');
   ba.textContent='💥'; ba.className='bomb-anim';
   document.getElementById('timerText').textContent='BOOOM! Waktu habis! ⏰';
