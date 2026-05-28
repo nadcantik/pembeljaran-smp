@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOM BELAJAR! - SMP Kelas 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:#FFF9F0;min-height:100vh}
+
+  /* ===== NAVBAR ===== */
+  .navbar{background:#fff;border-bottom:2px solid #F0E8DC;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .navbar-logo{font-size:20px;font-weight:900;color:#FF6B35;display:flex;align-items:center;gap:8px}
+  .navbar-right{display:flex;align-items:center;gap:10px}
+  .navbar-poin{background:#FFF0E8;border:2px solid #FFDDD0;border-radius:99px;padding:5px 14px;font-size:13px;font-weight:800;color:#993C1D}
+  .navbar-admin-btn{background:#EEEDFE;border:2px solid #AFA9EC;border-radius:99px;padding:5px 14px;font-size:13px;font-weight:800;color:#3C3489;cursor:pointer}
+
+  /* ===== SCREENS ===== */
+  .screen{display:none;min-height:calc(100vh - 60px)}
+  .screen.active{display:block}
+
+  /* ===== HOME ===== */
+  .home-hero{text-align:center;padding:28px 20px 16px}
+  .home-hero .bomb-big{font-size:64px;display:inline-block;animation:bounce 1.2s ease-in-out infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .home-hero h1{font-size:26px;font-weight:900;color:#2C2C2A;margin-top:8px}
+  .home-hero p{font-size:14px;color:#888780;margin-top:4px}
+  .home-section-title{font-size:13px;font-weight:800;color:#888780;padding:0 20px;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+  .mapel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 20px 30px;max-width:600px;margin:0 auto}
+  @media(min-width:500px){.mapel-grid{grid-template-columns:repeat(3,1fr)}}
+  .mapel-card{border-radius:18px;border:2.5px solid #E8E0D4;padding:16px 12px;cursor:pointer;text-align:center;transition:transform 0.15s,box-shadow 0.15s;position:relative;overflow:hidden;background:#fff}
+  .mapel-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+  .mapel-card:active{transform:scale(0.96)}
+  .mapel-bomb-deco{position:absolute;top:6px;right:8px;font-size:14px;opacity:0.35}
+  .mapel-emoji{font-size:32px;margin-bottom:8px}
+  .mapel-name{font-size:12px;font-weight:800;color:#2C2C2A;line-height:1.3}
+  .mapel-count{font-size:11px;color:#888780;margin-top:3px;font-weight:700}
+  .mapel-best{font-size:11px;margin-top:4px;font-weight:800}
+
+  /* ===== QUIZ ===== */
+  .quiz-wrap{max-width:600px;margin:0 auto;padding:16px 20px 40px}
+  .quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .back-btn{background:#fff;border:2px solid #E8E0D4;border-radius:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;font-weight:900;color:#2C2C2A;flex-shrink:0;transition:background 0.15s}
+  .back-btn:hover{background:#F5EDE0}
+  .quiz-mapel-info{flex:1}
+  .quiz-mapel-title{font-size:16px;font-weight:900;color:#2C2C2A}
+  .quiz-mapel-sub{font-size:12px;color:#888780;font-weight:700}
+
+  .progress-wrap{margin-bottom:14px}
+  .progress-info{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#5F5E5A;margin-bottom:6px}
+  .progress-bar{background:#E8E0D4;border-radius:99px;height:12px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#FF6B35,#FF9A5C);transition:width 0.5s ease}
+
+  .score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .score-box{background:#fff;border:2px solid #E8E0D4;border-radius:14px;padding:10px 8px;text-align:center}
+  .score-box .val{font-size:22px;font-weight:900;color:#2C2C2A}
+  .score-box .lbl{font-size:11px;color:#888780;font-weight:700}
+
+  .bomb-zone{text-align:center;margin-bottom:8px}
+  .bomb-anim{font-size:38px;display:inline-block}
+  .bomb-anim.idle{animation:wiggle 3s ease-in-out infinite}
+  .bomb-anim.warning{animation:fast-wiggle 0.4s ease-in-out infinite}
+  @keyframes wiggle{0%,85%,100%{transform:rotate(0)}88%{transform:rotate(-10deg)}92%{transform:rotate(10deg)}96%{transform:rotate(-6deg)}}
+  @keyframes fast-wiggle{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+  .timer-bar-wrap{background:#E8E0D4;border-radius:99px;height:8px;margin:6px 0 2px;overflow:hidden}
+  .timer-bar{height:100%;border-radius:99px;background:#FF6B35;transition:width 1s linear,background 1s}
+  .timer-text{font-size:12px;font-weight:800;color:#854F0B;text-align:center}
+
+  .question-card{background:#fff;border-radius:20px;border:2px solid #E8E0D4;padding:20px 18px;margin-bottom:14px}
+  .q-number{font-size:11px;font-weight:800;color:#888780;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+  .q-text{font-size:15px;font-weight:700;color:#2C2C2A;line-height:1.6}
+
+  .options-list{display:flex;flex-direction:column;gap:9px}
+  .opt-btn{background:#fff;border:2px solid #E8E0D4;border-radius:16px;padding:13px 14px;font-size:13px;font-weight:700;color:#2C2C2A;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;transition:all 0.15s;font-family:'Nunito',sans-serif;width:100%}
+  .opt-btn:hover:not(:disabled){background:#FFF0E8;border-color:#FF9A5C;transform:translateX(4px)}
+  .opt-btn:disabled{cursor:default}
+  .opt-label{width:28px;height:28px;border-radius:9px;background:#FFF0E8;color:#FF6B35;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #FFDDD0;transition:all 0.15s}
+  .opt-btn.correct{background:#E8F8EC;border-color:#3B6D11;animation:popIn 0.3s ease}
+  .opt-btn.correct .opt-label{background:#3B6D11;color:#fff;border-color:#3B6D11}
+  .opt-btn.wrong{background:#FCEBEB;border-color:#A32D2D;animation:shakeIt 0.4s ease}
+  .opt-btn.wrong .opt-label{background:#A32D2D;color:#fff;border-color:#A32D2D}
+  @keyframes popIn{0%{transform:scale(1)}40%{transform:scale(1.05)}100%{transform:scale(1)}}
+  @keyframes shakeIt{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+
+  .feedback-card{border-radius:14px;padding:13px 15px;margin-top:10px;font-size:13px;font-weight:700;line-height:1.6;display:none;border:2px solid}
+  .feedback-card.show{display:block;animation:fadeUp 0.25s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .feedback-card.correct-fb{background:#E8F8EC;color:#27500A;border-color:#97C459}
+  .feedback-card.wrong-fb{background:#FCEBEB;color:#791F1F;border-color:#F09595}
+  .feedback-card.timeout-fb{background:#FAEEDA;color:#633806;border-color:#EF9F27}
+
+  .next-btn{width:100%;margin-top:12px;padding:15px;background:#FF6B35;border:none;border-radius:16px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;display:none;transition:transform 0.1s,background 0.15s}
+  .next-btn:hover{background:#E85A25}
+  .next-btn:active{transform:scale(0.97)}
+  .next-btn.show{display:block;animation:fadeUp 0.2s ease}
+
+  /* ===== RESULT ===== */
+  .result-wrap{max-width:500px;margin:0 auto;padding:30px 20px 50px;text-align:center}
+  .result-bomb{font-size:80px;display:inline-block;animation:bounce 1s ease-in-out infinite;margin-bottom:8px}
+  .result-title{font-size:22px;font-weight:900;color:#2C2C2A}
+  .result-nilai-big{font-size:56px;font-weight:900;color:#FF6B35;margin:10px 0 4px;line-height:1}
+  .result-sub{font-size:14px;color:#888780;font-weight:700;margin-bottom:12px}
+  .stars-row{font-size:36px;letter-spacing:6px;margin:8px 0 16px}
+  .result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .result-stat{background:#fff;border:2px solid #E8E0D4;border-radius:14px;padding:12px 8px;text-align:center}
+  .result-stat .sv{font-size:22px;font-weight:900;color:#2C2C2A}
+  .result-stat .sl{font-size:11px;color:#888780;font-weight:700}
+  .result-msg{background:#fff;border:2px solid #E8E0D4;border-radius:16px;padding:14px 16px;font-size:13px;font-weight:700;color:#3C3489;margin-bottom:20px;line-height:1.6;text-align:left}
+  .result-btns{display:flex;flex-direction:column;gap:10px}
+  .result-btn{padding:14px;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;border:none;transition:transform 0.1s}
+  .result-btn:active{transform:scale(0.97)}
+  .btn-retry{background:#FF6B35;color:#fff}
+  .btn-retry:hover{background:#E85A25}
+  .btn-home{background:#fff;border:2px solid #E8E0D4!important;color:#2C2C2A;border:none}
+  .btn-home:hover{background:#F5EDE0}
+
+  /* ===== REVIEW SOAL SALAH ===== */
+  .review-section{margin-top:20px;text-align:left}
+  .review-title{font-size:13px;font-weight:800;color:#888780;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
+  .review-item{background:#fff;border:2px solid #F7C1C1;border-radius:14px;padding:12px 14px;margin-bottom:8px}
+  .review-q{font-size:13px;font-weight:700;color:#2C2C2A;margin-bottom:4px}
+  .review-correct{font-size:12px;color:#27500A;font-weight:700}
+  .review-exp{font-size:12px;color:#5F5E5A;margin-top:3px;font-weight:600;line-height:1.5}
+
+  /* ===== ADMIN ===== */
+  .admin-wrap{max-width:600px;margin:0 auto;padding:20px}
+  .admin-header{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+  .admin-title{font-size:18px;font-weight:900;color:#2C2C2A}
+  .admin-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px}
+  .admin-tab{padding:8px 16px;border-radius:99px;border:2px solid #E8E0D4;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all 0.15s;background:#fff;font-family:'Nunito',sans-serif;color:#5F5E5A}
+  .admin-tab.active{background:#FF6B35;border-color:#FF6B35;color:#fff}
+  .admin-form{background:#fff;border:2px solid #E8E0D4;border-radius:20px;padding:20px}
+  .form-group{margin-bottom:14px}
+  .form-label{font-size:12px;font-weight:800;color:#5F5E5A;margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:0.5px}
+  .form-input,.form-textarea,.form-select{width:100%;padding:11px 14px;border:2px solid #E8E0D4;border-radius:12px;font-size:14px;font-weight:700;font-family:'Nunito',sans-serif;color:#2C2C2A;background:#FFF9F0;transition:border-color 0.15s;outline:none}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:#FF6B35}
+  .form-textarea{resize:vertical;min-height:80px}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .opt-input-wrap{display:flex;align-items:center;gap:8px}
+  .opt-radio{width:20px;height:20px;cursor:pointer;flex-shrink:0}
+  .opt-letter{font-size:13px;font-weight:900;color:#FF6B35;flex-shrink:0;width:16px}
+  .form-submit-btn{width:100%;padding:14px;background:#FF6B35;border:none;border-radius:14px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:4px;transition:background 0.15s}
+  .form-submit-btn:hover{background:#E85A25}
+  .soal-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+  .soal-item{background:#fff;border:2px solid #E8E0D4;border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .soal-item-q{font-size:13px;font-weight:700;color:#2C2C2A;flex:1;line-height:1.4}
+  .soal-item-ans{font-size:11px;color:#27500A;font-weight:800;margin-top:3px}
+  .soal-delete-btn{background:#FCEBEB;border:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:800;color:#A32D2D;cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0}
+  .empty-state{text-align:center;padding:30px;color:#888780;font-size:14px;font-weight:700}
+
+  /* ===== PARTICLES ===== */
+  .particle{position:fixed;border-radius:50%;pointer-events:none;z-index:999;animation:fall 1.3s ease forwards}
+  @keyframes fall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(600px) rotate(720deg);opacity:0}}
+  .explosion-fx{position:fixed;pointer-events:none;z-index:999;font-size:72px;animation:explodeFx 0.6s ease forwards}
+  @keyframes explodeFx{0%{transform:translate(-50%,-50%) scale(0.2);opacity:1}60%{transform:translate(-50%,-50%) scale(1.5);opacity:1}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
+
+  /* ===== TOAST ===== */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2C2C2A;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:700;z-index:9999;animation:toastIn 0.3s ease,toastOut 0.3s ease 2s forwards;white-space:nowrap}
+  @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+  @keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+  /* ===== MODAL LOGIN ADMIN ===== */
+  .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center}
+  .modal-overlay.show{display:flex}
+  .modal-box{background:#fff;border-radius:24px;padding:28px 24px;width:90%;max-width:360px;text-align:center}
+  .modal-bomb{font-size:48px;margin-bottom:10px}
+  .modal-title{font-size:18px;font-weight:900;color:#2C2C2A;margin-bottom:6px}
+  .modal-sub{font-size:13px;color:#888780;margin-bottom:16px;font-weight:700}
+  .modal-input{width:100%;padding:12px 14px;border:2px solid #E8E0D4;border-radius:12px;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;text-align:center;outline:none;letter-spacing:4px}
+  .modal-input:focus{border-color:#FF6B35}
+  .modal-btn{width:100%;padding:13px;background:#FF6B35;border:none;border-radius:14px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:12px}
+  .modal-cancel{width:100%;padding:10px;background:none;border:none;font-size:13px;font-weight:700;color:#888780;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-logo">💣 BOM BELAJAR!</div>
+  <div class="navbar-right">
+    <div class="navbar-poin">🏆 <span id="navPoin">0</span> poin</div>
+    <div class="navbar-admin-btn" onclick="openAdminLogin()">⚙️ Admin</div>
+  </div>
+</nav>
+
+<!-- SCREENS -->
+<div class="screen active" id="home-screen">
+  <div class="home-hero">
+    <span class="bomb-big">💣</span>
+    <h1>BOM BELAJAR!</h1>
+    <p>Pilih mata pelajaran & ledakkan semua soalnya!</p>
+  </div>
+  <p class="home-section-title">Pilih Mata Pelajaran</p>
+  <div class="mapel-grid" id="mapel-grid"></div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <div class="back-btn" onclick="goHome()" title="Kembali">&#8592;</div>
+      <div class="quiz-mapel-info">
+        <div class="quiz-mapel-title"><span id="qEmoji"></span> <span id="qTitle"></span></div>
+        <div class="quiz-mapel-sub" id="qSub"></div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progText">Soal 1 dari 5</span>
+        <span id="progPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+    </div>
+    <div class="score-row">
+      <div class="score-box"><div class="val" id="scoreBenar">0</div><div class="lbl">✓ Benar</div></div>
+      <div class="score-box"><div class="val" id="scoreSalah">0</div><div class="lbl">✗ Salah</div></div>
+      <div class="score-box"><div class="val" id="scorePoin">0</div><div class="lbl">⚡ Poin</div></div>
+    </div>
+    <div class="bomb-zone">
+      <span class="bomb-anim idle" id="bombAnim">💣</span>
+      <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
+      <div class="timer-text" id="timerText">Sumbu menyala... 15 detik!</div>
+    </div>
+    <div class="question-card">
+      <div class="q-number" id="qNum">Soal 1</div>
+      <div class="q-text" id="qText"></div>
+    </div>
+    <div class="options-list" id="optsList"></div>
+    <div class="feedback-card" id="feedbackCard"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Soal Berikutnya 💥</button>
+  </div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-wrap">
+    <span class="result-bomb" id="resultBomb">🏆</span>
+    <div class="result-title" id="resultTitle">Luar biasa!</div>
+    <div class="result-nilai-big" id="resultScore">80</div>
+    <div class="result-sub" id="resultSub">Nilai kamu</div>
+    <div class="stars-row" id="starsRow">⭐⭐⭐</div>
+    <div class="result-stats">
+      <div class="result-stat"><div class="sv" id="rBenar">0</div><div class="sl">Benar</div></div>
+      <div class="result-stat"><div class="sv" id="rSalah">0</div><div class="sl">Salah</div></div>
+      <div class="result-stat"><div class="sv" id="rPoin">0</div><div class="sl">Poin</div></div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryQuiz()">💣 Coba Lagi</button>
+      <button class="result-btn btn-home" onclick="goHome()">Pilih Mapel Lain</button>
+    </div>
+    <div class="review-section" id="reviewSection"></div>
+  </div>
+</div>
+
+<div class="screen" id="admin-screen">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div class="back-btn" onclick="goHome()">&#8592;</div>
+      <div class="admin-title">⚙️ Admin Panel</div>
+    </div>
+    <div class="admin-tabs" id="adminTabs"></div>
+    <div class="admin-form">
+      <div class="form-group">
+        <label class="form-label">Pertanyaan</label>
+        <textarea class="form-textarea" id="inputQ" placeholder="Tulis pertanyaan di sini..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pilihan Jawaban <span style="color:#888780;font-size:11px">(centang = jawaban benar)</span></label>
+        <div class="opts-grid" id="optsGrid"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Penjelasan Jawaban</label>
+        <textarea class="form-textarea" id="inputExp" placeholder="Jelaskan mengapa jawaban tersebut benar..."></textarea>
+      </div>
+      <button class="form-submit-btn" onclick="addSoal()">💾 Simpan Soal</button>
+    </div>
+    <div class="soal-list" id="soalList"></div>
+  </div>
+</div>
+
+<!-- MODAL ADMIN LOGIN -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-box">
+    <div class="modal-bomb">🔐</div>
+    <div class="modal-title">Masuk Admin</div>
+    <div class="modal-sub">Masukkan password admin</div>
+    <input class="modal-input" type="password" id="adminPassInput" placeholder="••••••" onkeydown="if(event.key==='Enter')checkAdmin()">
+    <button class="modal-btn" onclick="checkAdmin()">Masuk</button>
+    <button class="modal-cancel" onclick="closeAdminModal()">Batal</button>
+  </div>
+</div>
+
+<script>
+// ===================== DATA DEFAULT SOAL =====================
+const DEFAULT_SOAL = {
+  bing:[
+    {q:'What is the meaning of "brave"?',opts:['Penakut','Berani','Bodoh','Malas'],ans:1,exp:'"Brave" artinya berani atau tidak takut menghadapi bahaya.'},
+    {q:'Choose the correct sentence:',opts:["She don't like cats","She doesn't like cats","She not like cats","She didn't likes cats"],ans:1,exp:'Untuk subjek she/he/it gunakan "doesn\'t" + verb dasar.'},
+    {q:'The synonym of "happy" is...',opts:['Sad','Angry','Joyful','Tired'],ans:2,exp:'"Joyful" berarti penuh kegembiraan, sama dengan "happy".'},
+    {q:'"Yesterday I __ to school early." Fill in the blank!',opts:['go','goes','went','going'],ans:2,exp:'Kalimat past tense menggunakan verb bentuk ke-2. Go → Went.'},
+    {q:'What does "enormous" mean?',opts:['Kecil sekali','Sangat besar','Sangat cepat','Sangat jauh'],ans:1,exp:'"Enormous" artinya sangat besar atau raksasa.'}
+  ],
+  bind:[
+    {q:'Apa yang dimaksud dengan "majas personifikasi"?',opts:['Membandingkan dua hal berbeda','Memberi sifat manusia pada benda mati','Melebih-lebihkan sesuatu','Menggunakan kata berlawanan'],ans:1,exp:'Majas personifikasi memberikan sifat manusia kepada benda mati, misal "angin berbisik".'},
+    {q:'Kalimat yang menggunakan kata baku adalah...',opts:['Aku udah makan','Saya sudah makan','Gue udah makan','Aku dah makan'],ans:1,exp:'Kata baku sesuai KBBI: "sudah" bukan "udah/dah".'},
+    {q:'Antonim dari kata "dermawan" adalah...',opts:['Pemurah','Kikir','Baik hati','Rajin'],ans:1,exp:'"Dermawan" artinya murah hati, lawannya "kikir" (pelit).'},
+    {q:'Imbuhan "me-" pada kata "melukis" berfungsi...',opts:['Membentuk kata benda','Membentuk kata sifat','Membentuk kata kerja aktif','Membentuk kata keterangan'],ans:2,exp:'Awalan "me-" membentuk kata kerja aktif transitif.'},
+    {q:'Teks yang berisi langkah-langkah membuat sesuatu disebut...',opts:['Teks deskripsi','Teks prosedur','Teks narasi','Teks eksposisi'],ans:1,exp:'Teks prosedur berisi cara/langkah-langkah melakukan atau membuat sesuatu.'}
+  ],
+  bjawa:[
+    {q:'Basa krama inggil kanggo nyebut "makan" yaiku...',opts:['Mangan','Dhahar','Nedha','Ngunjuk'],ans:1,exp:'"Dhahar" adalah bahasa Jawa krama inggil untuk kata makan.'},
+    {q:'Ukara "Ibu tindak pasar" nganggo basa...',opts:['Ngoko','Krama madya','Krama inggil','Krama alus'],ans:2,exp:'"Tindak" adalah kata krama inggil untuk pergi/berangkat.'},
+    {q:'Aksara Jawa Hanacaraka cacahe ana...',opts:['15','20','25','30'],ans:1,exp:'Aksara Jawa (Hanacaraka) terdiri dari 20 aksara dasar.'},
+    {q:'Tegese tembung "becik" yaiku...',opts:['Elek','Apik/Bagus','Ala','Ora apik'],ans:1,exp:'"Becik" dalam bahasa Jawa berarti baik/bagus.'},
+    {q:'Basa krama alus kanggo "kowe" yaiku...',opts:['Sampeyan','Panjenengan','Kowé','Sira'],ans:1,exp:'"Panjenengan" adalah bentuk krama inggil/alus dari "kamu".'}
+  ],
+  mtk:[
+    {q:'Berapakah hasil dari 2³ × 3²?',opts:['36','48','72','54'],ans:2,exp:'2³=8 dan 3²=9. Maka 8×9=72.'},
+    {q:'Jika x + 5 = 12, maka nilai x adalah...',opts:['5','6','7','8'],ans:2,exp:'x = 12 - 5 = 7.'},
+    {q:'Luas lingkaran jari-jari 7 cm adalah... (π=22/7)',opts:['44 cm²','154 cm²','88 cm²','77 cm²'],ans:1,exp:'L=π×r²=22/7×49=154 cm².'},
+    {q:'Bentuk sederhana dari 36/48 adalah...',opts:['2/3','3/4','4/6','5/6'],ans:1,exp:'FPB 36&48=12. 36÷12=3, 48÷12=4. Jadi 3/4.'},
+    {q:'Nilai dari √144 adalah...',opts:['11','12','13','14'],ans:1,exp:'√144=12 karena 12×12=144.'}
+  ],
+  ipa:[
+    {q:'Proses fotosintesis menghasilkan...',opts:['CO₂ dan air','O₂ dan glukosa','N₂ dan protein','H₂ dan lemak'],ans:1,exp:'Fotosintesis: CO₂+H₂O+cahaya → Glukosa+O₂.'},
+    {q:'Organisme yang membuat makanannya sendiri disebut...',opts:['Konsumen','Pengurai','Produsen','Predator'],ans:2,exp:'Produsen adalah organisme autotrof (tumbuhan).'},
+    {q:'Satuan kuat arus listrik adalah...',opts:['Volt','Ohm','Ampere','Watt'],ans:2,exp:'Kuat arus listrik diukur dalam satuan Ampere (A).'},
+    {q:'Tulang yang melindungi jantung dan paru-paru adalah...',opts:['Tulang belakang','Tulang rusuk','Tulang dada','Tulang panggul'],ans:1,exp:'Tulang rusuk (iga) membentuk sangkar pelindung jantung & paru-paru.'},
+    {q:'Perubahan air menjadi uap air disebut...',opts:['Kondensasi','Sublimasi','Evaporasi','Deposisi'],ans:2,exp:'Evaporasi = perubahan wujud cair menjadi gas.'}
+  ],
+  ips:[
+    {q:'Proklamasi kemerdekaan Indonesia pada tanggal...',opts:['16 Agustus 1945','17 Agustus 1945','18 Agustus 1945','19 Agustus 1945'],ans:1,exp:'Proklamasi RI dibacakan 17 Agustus 1945 pukul 10.00 WIB.'},
+    {q:'Ibu kota negara Jepang adalah...',opts:['Beijing','Seoul','Osaka','Tokyo'],ans:3,exp:'Tokyo adalah ibu kota dan kota terbesar di Jepang.'},
+    {q:'Sumber daya alam yang tidak dapat diperbarui...',opts:['Air','Udara','Minyak bumi','Hutan'],ans:2,exp:'Minyak bumi terbentuk jutaan tahun, tidak bisa diperbarui cepat.'},
+    {q:'Lembaga negara yang membuat undang-undang adalah...',opts:['MPR','DPR','MA','KPU'],ans:1,exp:'DPR memiliki fungsi legislasi yaitu membuat undang-undang.'},
+    {q:'Batas wilayah Indonesia di sebelah utara adalah...',opts:['Australia','Samudra Hindia','Malaysia & Filipina','Timor Leste'],ans:2,exp:'Batas utara Indonesia: Malaysia, Singapura, Filipina, Laut China Selatan.'}
+  ],
+  pai:[
+    {q:'Jumlah rakaat sholat Dhuhur adalah...',opts:['2 rakaat','3 rakaat','4 rakaat','5 rakaat'],ans:2,exp:'Sholat Dhuhur = 4 rakaat, dilaksanakan setelah matahari tergelincir.'},
+    {q:'Surah pertama dalam Al-Quran adalah...',opts:['Al-Baqarah','Al-Ikhlas','Al-Fatihah','An-Nas'],ans:2,exp:'Al-Fatihah = surah ke-1 Al-Quran, terdiri dari 7 ayat.'},
+    {q:'Rukun Islam yang ke-3 adalah...',opts:['Syahadat','Sholat','Zakat','Puasa'],ans:2,exp:'Urutan: 1.Syahadat 2.Sholat 3.Zakat 4.Puasa 5.Haji.'},
+    {q:'Malaikat yang bertugas mencabut nyawa adalah...',opts:['Jibril','Mikail','Israfil','Izrail'],ans:3,exp:'Malaikat Izrail (Malakul Maut) mencabut nyawa semua makhluk.'},
+    {q:'Hari raya setelah bulan Ramadhan adalah...',opts:['Idul Adha','Idul Fitri','Maulid Nabi','Isra Miraj'],ans:1,exp:'Idul Fitri dirayakan 1 Syawal setelah selesai puasa Ramadhan.'}
+  ],
+  info:[
+    {q:'CPU adalah singkatan dari...',opts:['Central Processing Unit','Computer Power Unit','Central Power Unit','Computer Processing Unit'],ans:0,exp:'CPU = otak komputer yang memproses semua instruksi.'},
+    {q:'Ekstensi file gambar yang paling umum adalah...',opts:['.mp3','.docx','.jpg','.xlsx'],ans:2,exp:'.jpg (JPEG) adalah format gambar paling populer.'},
+    {q:'Bahasa untuk membuat halaman web adalah...',opts:['Python','HTML','Java','C++'],ans:1,exp:'HTML = HyperText Markup Language, standar pembuatan halaman web.'},
+    {q:'Apa fungsi tombol Ctrl+Z?',opts:['Menyimpan file','Undo/membatalkan aksi','Copy teks','Paste teks'],ans:1,exp:'Ctrl+Z = shortcut Undo, membatalkan aksi terakhir.'},
+    {q:'1 Kilobyte (KB) sama dengan...',opts:['100 Byte','512 Byte','1000 Byte','1024 Byte'],ans:3,exp:'1 KB = 1024 Byte dalam sistem biner komputer.'}
+  ],
+  penjas:[
+    {q:'Jumlah pemain sepak bola satu regu adalah...',opts:['9','10','11','12'],ans:2,exp:'Satu tim sepak bola = 11 pemain termasuk penjaga gawang.'},
+    {q:'Induk organisasi bulu tangkis dunia adalah...',opts:['FIFA','BWF','FIBA','IAAF'],ans:1,exp:'BWF = Badminton World Federation, induk bulu tangkis internasional.'},
+    {q:'Renang gaya punggung disebut...',opts:['Freestyle','Breaststroke','Butterfly','Backstroke'],ans:3,exp:'Backstroke = gaya punggung, perenang menghadap ke atas.'},
+    {q:'Servis melompat keras dalam bola voli disebut...',opts:['Spike','Smash','Jump serve','Float serve'],ans:2,exp:'Jump serve = servis dengan melompat dan memukul keras.'},
+    {q:'Lari jarak pendek dalam atletik disebut...',opts:['Maraton','Sprint','Jogging','Cross country'],ans:1,exp:'Sprint = lari jarak pendek (100m,200m,400m) kecepatan penuh.'}
+  ],
+  senibud:[
+    {q:'Tari Saman berasal dari daerah...',opts:['Jawa Tengah','Bali','Aceh','Papua'],ans:2,exp:'Tari Saman berasal dari Suku Gayo, Aceh. Diakui UNESCO.'},
+    {q:'Warna merah + kuning menghasilkan...',opts:['Hijau','Ungu','Oranye','Coklat'],ans:2,exp:'Merah+Kuning = Oranye (warna sekunder).'},
+    {q:'Alat musik gamelan termasuk jenis...',opts:['Aerofon','Kordofon','Membranofon','Idiofon'],ans:3,exp:'Gamelan = idiofon, sumber bunyi dari badan alat itu sendiri.'},
+    {q:'Melukis dengan cat minyak pada kanvas disebut...',opts:['Aquarel','Oil painting','Mozaik','Kolase'],ans:1,exp:'Oil painting = lukisan cat minyak di atas kanvas.'},
+    {q:'"Rayuan Pulau Kelapa" diciptakan oleh...',opts:['W.R. Supratman','Ismail Marzuki','C. Simanjuntak','Gesang'],ans:1,exp:'"Rayuan Pulau Kelapa" karya Ismail Marzuki, komponis besar RI.'}
+  ]
+};
+
+const MAPEL_META = [
+  {id:'bing',name:'Bahasa Inggris',emoji:'🌍',bg:'#E6F1FB',border:'#85B7EB'},
+  {id:'bind',name:'Bahasa Indonesia',emoji:'📚',bg:'#E1F5EE',border:'#5DCAA5'},
+  {id:'bjawa',name:'Bahasa Jawa',emoji:'🏺',bg:'#FAEEDA',border:'#EF9F27'},
+  {id:'mtk',name:'Matematika',emoji:'🔢',bg:'#EEEDFE',border:'#AFA9EC'},
+  {id:'ipa',name:'IPA',emoji:'🔬',bg:'#E1F5EE',border:'#1D9E75'},
+  {id:'ips',name:'IPS',emoji:'🌏',bg:'#FAECE7',border:'#D85A30'},
+  {id:'pai',name:'Pend. Agama Islam',emoji:'🕌',bg:'#EAF3DE',border:'#97C459'},
+  {id:'info',name:'Informatika',emoji:'💻',bg:'#EEEDFE',border:'#7F77DD'},
+  {id:'penjas',name:'Penjaskes',emoji:'⚽',bg:'#FCEBEB',border:'#E24B4A'},
+  {id:'senibud',name:'Seni Budaya',emoji:'🎨',bg:'#FBEAF0',border:'#D4537E'}
+];
+
+const ADMIN_PASS = 'bombelajar123';
+
+// ===================== STATE =====================
+let state = {
+  currentMapel: null,
+  currentSoal: 0,
+  benar: 0,
+  salah: 0,
+  poin: 0,
+  timer: null,
+  timeLeft: 15,
+  answered: false,
+  shuffled: [],
+  wrongList: [],
+  adminMapel: MAPEL_META[0].id
+};
+
+// ===================== LOCALSTORAGE =====================
+function getSoal(mapelId) {
+  const saved = localStorage.getItem('soal_' + mapelId);
+  return saved ? JSON.parse(saved) : (DEFAULT_SOAL[mapelId] || []);
+}
+function saveSoal(mapelId, arr) {
+  localStorage.setItem('soal_' + mapelId, JSON.stringify(arr));
+}
+function getTotalPoin() {
+  return parseInt(localStorage.getItem('total_poin') || '0');
+}
+function addTotalPoin(p) {
+  localStorage.setItem('total_poin', getTotalPoin() + p);
+  updateNavPoin();
+}
+function getBest(mapelId) {
+  return parseInt(localStorage.getItem('best_' + mapelId) || '0');
+}
+function saveBest(mapelId, nilai) {
+  if (nilai > getBest(mapelId)) localStorage.setItem('best_' + mapelId, nilai);
+}
+function updateNavPoin() {
+  document.getElementById('navPoin').textContent = getTotalPoin();
+}
+
+// ===================== SCREENS =====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goHome() {
+  clearInterval(state.timer);
+  renderMapel();
+  showScreen('home-screen');
+}
+
+// ===================== HOME =====================
+function renderMapel() {
+  const grid = document.getElementById('mapel-grid');
+  grid.innerHTML = MAPEL_META.map(m => {
+    const soalArr = getSoal(m.id);
+    const best = getBest(m.id);
+    const bestTxt = best > 0 ? `<div class="mapel-best" style="color:${m.border}">Terbaik: ${best}</div>` : '';
+    return `<div class="mapel-card" onclick="startQuiz('${m.id}')" style="background:${m.bg};border-color:${m.border}">
+      <div class="mapel-bomb-deco">💣</div>
+      <div class="mapel-emoji">${m.emoji}</div>
+      <div class="mapel-name">${m.name}</div>
+      <div class="mapel-count">${soalArr.length} soal</div>
+      ${bestTxt}
+    </div>`;
+  }).join('');
+}
+
+// ===================== QUIZ =====================
+function shuffle(arr) { return [...arr].sort(()=>Math.random()-0.5); }
+
+function startQuiz(mapelId) {
+  const meta = MAPEL_META.find(m=>m.id===mapelId);
+  const soalArr = getSoal(mapelId);
+  if (!soalArr.length) { showToast('Belum ada soal untuk mapel ini!'); return; }
+  state.currentMapel = mapelId;
+  state.shuffled = shuffle(soalArr);
+  state.currentSoal = 0;
+  state.benar = 0; state.salah = 0; state.poin = 0;
+  state.wrongList = [];
+  document.getElementById('qEmoji').textContent = meta.emoji;
+  document.getElementById('qTitle').textContent = meta.name;
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const soal = state.shuffled[state.currentSoal];
+  const total = state.shuffled.length;
+  const pct = Math.round((state.currentSoal / total) * 100);
+  document.getElementById('progText').textContent = `Soal ${state.currentSoal+1} dari ${total}`;
+  document.getElementById('progPct').textContent = pct + '%';
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('qSub').textContent = `${state.currentSoal+1} / ${total} soal`;
+  document.getElementById('scoreBenar').textContent = state.benar;
+  document.getElementById('scoreSalah').textContent = state.salah;
+  document.getElementById('scorePoin').textContent = state.poin;
+  document.getElementById('qNum').textContent = `Soal ${state.currentSoal+1}`;
+  document.getElementById('qText').textContent = soal.q;
+  const labels = ['A','B','C','D'];
+  document.getElementById('optsList').innerHTML = soal.opts.map((o,i)=>`
+    <button class="opt-btn" onclick="answer(${i})" id="opt${i}">
+      <span class="opt-label">${labels[i]}</span><span>${o}</span>
+    </button>`).join('');
+  const fb = document.getElementById('feedbackCard');
+  fb.className='feedback-card'; fb.textContent='';
+  document.getElementById('nextBtn').className='next-btn';
+  const ba = document.getElementById('bombAnim');
+  ba.className='bomb-anim idle'; ba.textContent='💣';
+  document.getElementById('timerText').style.color='#854F0B';
+  state.answered = false;
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(state.timer);
+  state.timeLeft = 15;
+  updateTimerUI();
+  state.timer = setInterval(()=>{
+    state.timeLeft--;
+    updateTimerUI();
+    if(state.timeLeft<=0){ clearInterval(state.timer); if(!state.answered) autoWrong(); }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const t = state.timeLeft;
+  const bar = document.getElementById('timerBar');
+  const txt = document.getElementById('timerText');
+  const ba = document.getElementById('bombAnim');
+  bar.style.width = (t/15*100)+'%';
+  if(t>10){ bar.style.background='#52B788'; ba.textContent='💣'; ba.className='bomb-anim idle'; txt.style.color='#854F0B'; }
+  else if(t>5){ bar.style.background='#EF9F27'; ba.textContent='💣'; ba.className='bomb-anim idle'; txt.style.color='#993C1D'; }
+  else { bar.style.background='#E24B4A'; ba.textContent='🔴'; ba.className='bomb-anim warning'; txt.style.color='#A32D2D'; }
+  txt.textContent = `Sumbu menyala... ${t} detik!`;
+}
+
+function answer(idx) {
+  if(state.answered) return;
+  state.answered = true;
+  clearInterval(state.timer);
+  const soal = state.shuffled[state.currentSoal];
+  const correct = idx === soal.ans;
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.getElementById(`opt${idx}`).classList.add(correct?'correct':'wrong');
+  if(!correct) document.getElementById(`opt${soal.ans}`)?.classList.add('correct');
+  const ba = document.getElementById('bombAnim');
+  const fb = document.getElementById('feedbackCard');
+  if(correct){
+    state.benar++; state.poin+=10;
+    ba.textContent='🌟'; ba.className='bomb-anim';
+    document.getElementById('timerText').textContent='Mantap! Jawaban benar! 🎉';
+    fb.className='feedback-card show correct-fb';
+    fb.textContent='✓ Benar! '+soal.exp;
+    spawnConfetti();
+  } else {
+    state.salah++;
+    ba.textContent='💥'; ba.className='bomb-anim';
+    document.getElementById('timerText').textContent='BOOOM! Jawaban salah! 😅';
+    fb.className='feedback-card show wrong-fb';
+    fb.textContent='✗ Salah. '+soal.exp;
+    state.wrongList.push(soal);
+    spawnExplosion();
+  }
+  document.getElementById('scoreBenar').textContent=state.benar;
+  document.getElementById('scoreSalah').textContent=state.salah;
+  document.getElementById('scorePoin').textContent=state.poin;
+  const nb = document.getElementById('nextBtn');
+  nb.className='next-btn show';
+  nb.textContent = state.currentSoal===state.shuffled.length-1 ? 'Lihat Hasil 🏆' : 'Soal Berikutnya 💥';
+}
+
+function autoWrong() {
+  state.answered=true; state.salah++;
+  const soal = state.shuffled[state.currentSoal];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.getElementById(`opt${soal.ans}`)?.classList.add('correct');
+  const ba = document.getElementById('bombAnim');
+  ba.textContent='💥'; ba.className='bomb-anim';
+  document.getElementById('timerText').textContent='BOOOM! Waktu habis! ⏰';
+  const fb = document.getElementById('feedbackCard');
+  fb.className='feedback-card show timeout-fb';
+  fb.textContent='⏰ Waktu habis! '+soal.exp;
+  state.wrongList.push(soal);
+  spawnExplosion();
+  document.getElementById('scoreBenar').textContent=state.benar;
+  document.getElementById('scoreSalah').textContent=state.salah;
+  const nb = document.getElementById('nextBtn');
+  nb.className='next-btn show';
+  nb.textContent = state.currentSoal===state.shuffled.length-1 ? 'Lihat Hasil 🏆' : 'Soal Berikutnya 💥';
+}
+
+function nextQuestion() {
+  state.currentSoal++;
+  if(state.currentSoal>=state.shuffled.length) showResult();
+  else renderQuestion();
+}
+
+// ===================== RESULT =====================
+function showResult() {
+  clearInterval(state.timer);
+  const total = state.shuffled.length;
+  const nilai = Math.round((state.benar/total)*100);
+  addTotalPoin(state.poin);
+  saveBest(state.currentMapel, nilai);
+  let stars='⭐',msg='',bomb='😢',title='Semangat ya!';
+  if(nilai>=80){stars='⭐⭐⭐';msg='Wow! Kamu luar biasa! Nilai sempurna! Pertahankan terus ya, Juara! 🏆';bomb='🏆';title='Luar biasa!';}
+  else if(nilai>=60){stars='⭐⭐';msg='Bagus banget! Kamu sudah berjuang keras. Sedikit lagi bisa sempurna! 💪';bomb='💪';title='Bagus banget!';}
+  else{stars='⭐';msg='Jangan menyerah ya! Baca lagi materinya, pasti bisa dapat nilai lebih tinggi! 🌱';bomb='💣';title='Ayo semangat!';}
+  document.getElementById('resultBomb').textContent=bomb;
+  document.getElementById('resultTitle').textContent=title;
+  document.getElementById('resultScore').textContent=nilai;
+  document.getElementById('resultSub').textContent=`Nilai kamu — ${state.benar} dari ${total} soal benar`;
+  document.getElementById('starsRow').textContent=stars;
+  document.getElementById('rBenar').textContent=state.benar;
+  document.getElementById('rSalah').textContent=state.salah;
+  document.getElementById('rPoin').textContent=state.poin;
+  const meta = MAPEL_META.find(m=>m.id===state.currentMapel);
+  document.getElementById('resultMsg').textContent=msg;
+  const rev = document.getElementById('reviewSection');
+  if(state.wrongList.length>0){
+    rev.innerHTML=`<div class="review-title">📝 Review Soal yang Salah (${state.wrongList.length} soal)</div>`
+      +state.wrongList.map(s=>`<div class="review-item">
+        <div class="review-q">${s.q}</div>
+        <div class="review-correct">✓ Jawaban benar: ${s.opts[s.ans]}</div>
+        <div class="review-exp">${s.exp}</div>
+      </div>`).join('');
+  } else {
+    rev.innerHTML='<div style="text-align:center;padding:16px;font-size:24px">🎯 Semua jawaban benar!</div>';
+  }
+  if(nilai>=80) spawnConfetti();
+  showScreen('result-screen');
+}
+
+function retryQuiz() { startQuiz(state.currentMapel); }
+
+// ===================== ADMIN =====================
+function openAdminLogin() {
+  document.getElementById('adminModal').classList.add('show');
+  setTimeout(()=>document.getElementById('adminPassInput').focus(),100);
+}
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('show');
+  document.getElementById('adminPassInput').value='';
+}
+function checkAdmin() {
+  const val = document.getElementById('adminPassInput').value;
+  if(val===ADMIN_PASS){ closeAdminModal(); showAdminScreen(); }
+  else { document.getElementById('adminPassInput').value=''; document.getElementById('adminPassInput').placeholder='Salah! Coba lagi...'; setTimeout(()=>{document.getElementById('adminPassInput').placeholder='••••••';},2000); }
+}
+function showAdminScreen() {
+  renderAdminTabs();
+  renderAdminForm();
+  renderSoalList();
+  showScreen('admin-screen');
+}
+function renderAdminTabs() {
+  const tabs = document.getElementById('adminTabs');
+  tabs.innerHTML = MAPEL_META.map(m=>`
+    <button class="admin-tab${m.id===state.adminMapel?' active':''}" onclick="switchAdminMapel('${m.id}')">${m.emoji} ${m.name}</button>
+  `).join('');
+}
+function switchAdminMapel(id) {
+  state.adminMapel=id;
+  renderAdminTabs();
+  renderSoalList();
+  clearAdminForm();
+}
+function renderAdminForm() {
+  const grid = document.getElementById('optsGrid');
+  const labels=['A','B','C','D'];
+  grid.innerHTML=labels.map((l,i)=>`
+    <div class="opt-input-wrap">
+      <span class="opt-letter">${l}</span>
+      <input class="form-input" id="opt${i}" placeholder="Pilihan ${l}" style="padding:9px 10px">
+      <input type="radio" class="opt-radio" name="ansRadio" value="${i}" id="radio${i}">
+    </div>
+  `).join('');
+}
+function clearAdminForm() {
+  document.getElementById('inputQ').value='';
+  document.getElementById('inputExp').value='';
+  ['opt0','opt1','opt2','opt3'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('input[name="ansRadio"]').forEach(r=>r.checked=false);
+}
+function addSoal() {
+  const q = document.getElementById('inputQ').value.trim();
+  const exp = document.getElementById('inputExp').value.trim();
+  const opts = [0,1,2,3].map(i=>document.getElementById('opt'+i)?.value.trim()||'');
+  const ansEl = document.querySelector('input[name="ansRadio"]:checked');
+  if(!q){showToast('Pertanyaan tidak boleh kosong!');return;}
+  if(opts.filter(Boolean).length<2){showToast('Isi minimal 2 pilihan jawaban!');return;}
+  if(!ansEl){showToast('Pilih jawaban yang benar!');return;}
+  if(!exp){showToast('Isi penjelasan jawaban!');return;}
+  const soalArr = getSoal(state.adminMapel);
+  soalArr.push({q,opts,ans:parseInt(ansEl.value),exp});
+  saveSoal(state.adminMapel,soalArr);
+  clearAdminForm();
+  renderSoalList();
+  showToast('Soal berhasil disimpan! 💾');
+}
+function deleteSoal(idx) {
+  if(!confirm('Hapus soal ini?')) return;
+  const arr = getSoal(state.adminMapel);
+  arr.splice(idx,1);
+  saveSoal(state.adminMapel,arr);
+  renderSoalList();
+  showToast('Soal dihapus!');
+}
+function renderSoalList() {
+  const arr = getSoal(state.adminMapel);
+  const div = document.getElementById('soalList');
+  if(!arr.length){ div.innerHTML='<div class="empty-state">Belum ada soal. Tambahkan soal di atas!</div>'; return; }
+  div.innerHTML=arr.map((s,i)=>`
+    <div class="soal-item">
+      <div style="flex:1">
+        <div class="soal-item-q">${i+1}. ${s.q}</div>
+        <div class="soal-item-ans">✓ ${s.opts[s.ans]}</div>
+      </div>
+      <button class="soal-delete-btn" onclick="deleteSoal(${i})">Hapus</button>
+    </div>`).join('');
+}
+
+// ===================== FX =====================
+function spawnConfetti() {
+  const colors=['#FF6B35','#FFD166','#06D6A0','#118AB2','#EF476F','#7F77DD','#06D6A0'];
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');
+    el.className='particle';
+    el.style.cssText=`left:${Math.random()*100}%;top:${10+Math.random()*20}%;width:${7+Math.random()*9}px;height:${7+Math.random()*9}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*0.5}s;animation-duration:${0.9+Math.random()*0.7}s`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1600);
+  }
+}
+function spawnExplosion() {
+  const el=document.createElement('div');
+  el.className='explosion-fx';
+  el.style.cssText=`top:40%;left:50%`;
+  el.textContent='💥';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),700);
+}
+function showToast(msg) {
+  const old=document.querySelector('.toast');
+  if(old) old.remove();
+  const t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+// ===================== INIT =====================
+updateNavPoin();
+renderMapel();
+</script>
+</body>
+</html>
