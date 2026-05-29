@@ -112,7 +112,7 @@
   .result-btn:active{transform:scale(0.97)}
   .btn-retry{background:#FF6B35;color:#fff}
   .btn-retry:hover{background:#E85A25}
-  .btn-home{background:#fff;border:2px solid #E8E0D4!important;color:#2C2C2A;border:none}
+  .btn-home{background:#fff;border:2px solid #E8E0D4!important;color:#2C2C2A}
   .btn-home:hover{background:#F5EDE0}
 
   /* ===== REVIEW SOAL SALAH ===== */
@@ -160,10 +160,10 @@
   @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
   @keyframes toastOut{from{opacity:1}to{opacity:0}}
 
-  /* ===== MODAL LOGIN ADMIN ===== */
-  .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center}
+  /* ===== MODAL PILIH MODE ===== */
+  .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center;padding:16px}
   .modal-overlay.show{display:flex}
-  .modal-box{background:#fff;border-radius:24px;padding:28px 24px;width:90%;max-width:360px;text-align:center}
+  .modal-box{background:#fff;border-radius:24px;padding:28px 24px;width:90%;max-width:380px;text-align:center;animation:fadeUp 0.2s ease}
   .modal-bomb{font-size:48px;margin-bottom:10px}
   .modal-title{font-size:18px;font-weight:900;color:#2C2C2A;margin-bottom:6px}
   .modal-sub{font-size:13px;color:#888780;margin-bottom:16px;font-weight:700}
@@ -171,6 +171,29 @@
   .modal-input:focus{border-color:#FF6B35}
   .modal-btn{width:100%;padding:13px;background:#FF6B35;border:none;border-radius:14px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:12px}
   .modal-cancel{width:100%;padding:10px;background:none;border:none;font-size:13px;font-weight:700;color:#888780;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px}
+
+  /* ===== MODE PICKER ===== */
+  .mode-box{background:#fff;border-radius:24px;padding:24px 20px;width:100%;max-width:420px;animation:fadeUp 0.2s ease}
+  .mode-top{text-align:center;margin-bottom:18px}
+  .mode-mapel-emoji{font-size:40px;margin-bottom:6px}
+  .mode-mapel-name{font-size:17px;font-weight:900;color:#2C2C2A}
+  .mode-mapel-count{font-size:13px;color:#888780;font-weight:700;margin-top:2px}
+  .mode-section-lbl{font-size:11px;font-weight:800;color:#888780;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+  .mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .mode-card{border:2.5px solid #E8E0D4;border-radius:16px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fff}
+  .mode-card:hover{transform:translateY(-2px)}
+  .mode-card.selected{border-color:#FF6B35;background:#FFF0E8}
+  .mode-card-emoji{font-size:24px;margin-bottom:4px}
+  .mode-card-name{font-size:13px;font-weight:800;color:#2C2C2A}
+  .mode-card-desc{font-size:11px;color:#888780;margin-top:2px;font-weight:700;line-height:1.3}
+  .jumlah-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .jumlah-btn{padding:8px 16px;border-radius:99px;border:2px solid #E8E0D4;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;background:#fff;color:#2C2C2A;transition:all 0.15s}
+  .jumlah-btn:hover{border-color:#FF6B35}
+  .jumlah-btn.selected{background:#FF6B35;border-color:#FF6B35;color:#fff}
+  .mode-start-btn{width:100%;padding:14px;background:#FF6B35;border:none;border-radius:14px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;transition:background 0.15s}
+  .mode-start-btn:hover{background:#E85A25}
+  .mode-cancel-btn{width:100%;padding:10px;background:none;border:none;font-size:13px;font-weight:700;color:#888780;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px}
+  .mode-ujian-badge{display:inline-block;background:#3C3489;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;margin-left:6px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -184,7 +207,7 @@
   </div>
 </nav>
 
-<!-- SCREENS -->
+<!-- HOME -->
 <div class="screen active" id="home-screen">
   <div class="home-hero">
     <span class="bomb-big">💣</span>
@@ -195,6 +218,7 @@
   <div class="mapel-grid" id="mapel-grid"></div>
 </div>
 
+<!-- QUIZ -->
 <div class="screen" id="quiz-screen">
   <div class="quiz-wrap">
     <div class="quiz-header">
@@ -231,6 +255,7 @@
   </div>
 </div>
 
+<!-- RESULT -->
 <div class="screen" id="result-screen">
   <div class="result-wrap">
     <span class="result-bomb" id="resultBomb">🏆</span>
@@ -252,6 +277,7 @@
   </div>
 </div>
 
+<!-- ADMIN -->
 <div class="screen" id="admin-screen">
   <div class="admin-wrap">
     <div class="admin-header">
@@ -278,7 +304,35 @@
   </div>
 </div>
 
-<!-- MODAL ADMIN LOGIN -->
+<!-- MODAL: PILIH MODE & JUMLAH SOAL -->
+<div class="modal-overlay" id="modeModal">
+  <div class="mode-box">
+    <div class="mode-top">
+      <div class="mode-mapel-emoji" id="modeEmoji">📚</div>
+      <div class="mode-mapel-name" id="modeName">Mata Pelajaran</div>
+      <div class="mode-mapel-count" id="modeCount">0 soal tersedia</div>
+    </div>
+    <div class="mode-section-lbl">Mode Latihan</div>
+    <div class="mode-cards">
+      <div class="mode-card selected" id="modeCardLatihan" onclick="selectMode('latihan')">
+        <div class="mode-card-emoji">💣</div>
+        <div class="mode-card-name">Latihan</div>
+        <div class="mode-card-desc">Langsung tahu benar/salah tiap soal</div>
+      </div>
+      <div class="mode-card" id="modeCardUjian" onclick="selectMode('ujian')">
+        <div class="mode-card-emoji">📝</div>
+        <div class="mode-card-name">Mode Ujian</div>
+        <div class="mode-card-desc">Semua soal dulu, hasil di akhir</div>
+      </div>
+    </div>
+    <div class="mode-section-lbl">Jumlah Soal</div>
+    <div class="jumlah-row" id="jumlahRow"></div>
+    <button class="mode-start-btn" onclick="startFromModal()">💥 Mulai Sekarang!</button>
+    <button class="mode-cancel-btn" onclick="closeModeModal()">Batal</button>
+  </div>
+</div>
+
+<!-- MODAL: LOGIN ADMIN -->
 <div class="modal-overlay" id="adminModal">
   <div class="modal-box">
     <div class="modal-bomb">🔐</div>
@@ -384,212 +438,215 @@ const ADMIN_PASS = 'bombelajar123';
 let state = {
   currentMapel: null,
   currentSoal: 0,
-  benar: 0,
-  salah: 0,
-  poin: 0,
-  timer: null,
-  timeLeft: 15,
+  benar: 0, salah: 0, poin: 0,
+  timer: null, timeLeft: 15,
   answered: false,
-  shuffled: [],
-  wrongList: [],
-  adminMapel: MAPEL_META[0].id
+  shuffled: [], wrongList: [],
+  adminMapel: MAPEL_META[0].id,
+  mode: 'latihan',   // 'latihan' | 'ujian'
+  jumlahSoal: 0,
+  pendingMapel: null
 };
 
 // ===================== LOCALSTORAGE =====================
-function getSoal(mapelId) {
-  const saved = localStorage.getItem('soal_' + mapelId);
-  return saved ? JSON.parse(saved) : (DEFAULT_SOAL[mapelId] || []);
-}
-function saveSoal(mapelId, arr) {
-  localStorage.setItem('soal_' + mapelId, JSON.stringify(arr));
-}
-function getTotalPoin() {
-  return parseInt(localStorage.getItem('total_poin') || '0');
-}
-function addTotalPoin(p) {
-  localStorage.setItem('total_poin', getTotalPoin() + p);
-  updateNavPoin();
-}
-function getBest(mapelId) {
-  return parseInt(localStorage.getItem('best_' + mapelId) || '0');
-}
-function saveBest(mapelId, nilai) {
-  if (nilai > getBest(mapelId)) localStorage.setItem('best_' + mapelId, nilai);
-}
-function updateNavPoin() {
-  document.getElementById('navPoin').textContent = getTotalPoin();
-}
+function getSoal(id){ const s=localStorage.getItem('soal_'+id); return s?JSON.parse(s):(DEFAULT_SOAL[id]||[]); }
+function saveSoal(id,arr){ localStorage.setItem('soal_'+id,JSON.stringify(arr)); }
+function getTotalPoin(){ return parseInt(localStorage.getItem('total_poin')||'0'); }
+function addTotalPoin(p){ localStorage.setItem('total_poin',getTotalPoin()+p); updateNavPoin(); }
+function getBest(id){ return parseInt(localStorage.getItem('best_'+id)||'0'); }
+function saveBest(id,n){ if(n>getBest(id)) localStorage.setItem('best_'+id,n); }
+function updateNavPoin(){ document.getElementById('navPoin').textContent=getTotalPoin(); }
 
 // ===================== SCREENS =====================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
-function goHome() {
-  clearInterval(state.timer);
-  renderMapel();
-  showScreen('home-screen');
-}
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+function goHome(){ clearInterval(state.timer); renderMapel(); showScreen('home-screen'); }
 
 // ===================== HOME =====================
-function renderMapel() {
-  const grid = document.getElementById('mapel-grid');
-  grid.innerHTML = MAPEL_META.map(m => {
-    const soalArr = getSoal(m.id);
-    const best = getBest(m.id);
-    const bestTxt = best > 0 ? `<div class="mapel-best" style="color:${m.border}">Terbaik: ${best}</div>` : '';
-    return `<div class="mapel-card" onclick="startQuiz('${m.id}')" style="background:${m.bg};border-color:${m.border}">
+function renderMapel(){
+  const grid=document.getElementById('mapel-grid');
+  grid.innerHTML=MAPEL_META.map(m=>{
+    const arr=getSoal(m.id); const best=getBest(m.id);
+    const bestTxt=best>0?`<div class="mapel-best" style="color:${m.border}">Terbaik: ${best}</div>`:'';
+    return `<div class="mapel-card" onclick="openModeModal('${m.id}')" style="background:${m.bg};border-color:${m.border}">
       <div class="mapel-bomb-deco">💣</div>
       <div class="mapel-emoji">${m.emoji}</div>
       <div class="mapel-name">${m.name}</div>
-      <div class="mapel-count">${soalArr.length} soal</div>
-      ${bestTxt}
+      <div class="mapel-count">${arr.length} soal</div>${bestTxt}
     </div>`;
   }).join('');
 }
 
-// ===================== QUIZ =====================
-function shuffle(arr) { return [...arr].sort(()=>Math.random()-0.5); }
+// ===================== MODE MODAL =====================
+function openModeModal(mapelId){
+  const meta=MAPEL_META.find(m=>m.id===mapelId);
+  const arr=getSoal(mapelId);
+  if(!arr.length){ showToast('Belum ada soal untuk mapel ini!'); return; }
+  state.pendingMapel=mapelId;
+  state.mode='latihan';
+  document.getElementById('modeEmoji').textContent=meta.emoji;
+  document.getElementById('modeName').textContent=meta.name;
+  document.getElementById('modeCount').textContent=arr.length+' soal tersedia';
+  document.getElementById('modeCardLatihan').classList.add('selected');
+  document.getElementById('modeCardUjian').classList.remove('selected');
+  // jumlah buttons
+  const total=arr.length;
+  const opts=[...new Set([10,20,30,50,total].filter(n=>n<=total))];
+  state.jumlahSoal=total;
+  document.getElementById('jumlahRow').innerHTML=opts.map(n=>
+    `<button class="jumlah-btn${n===total?' selected':''}" onclick="selectJumlah(${n},${total})" id="jbtn${n}">${n===total?'Semua ('+n+')':n+' soal'}</button>`
+  ).join('');
+  document.getElementById('modeModal').classList.add('show');
+}
+function closeModeModal(){ document.getElementById('modeModal').classList.remove('show'); }
+function selectMode(m){
+  state.mode=m;
+  document.getElementById('modeCardLatihan').classList.toggle('selected',m==='latihan');
+  document.getElementById('modeCardUjian').classList.toggle('selected',m==='ujian');
+}
+function selectJumlah(n,total){
+  state.jumlahSoal=n;
+  document.querySelectorAll('.jumlah-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('jbtn'+n).classList.add('selected');
+}
+function startFromModal(){ closeModeModal(); startQuiz(state.pendingMapel,state.mode,state.jumlahSoal); }
 
-function startQuiz(mapelId) {
-  const meta = MAPEL_META.find(m=>m.id===mapelId);
-  const soalArr = getSoal(mapelId);
-  if (!soalArr.length) { showToast('Belum ada soal untuk mapel ini!'); return; }
-  state.currentMapel = mapelId;
-  state.shuffled = shuffle(soalArr);
-  state.currentSoal = 0;
-  state.benar = 0; state.salah = 0; state.poin = 0;
-  state.wrongList = [];
-  document.getElementById('qEmoji').textContent = meta.emoji;
-  document.getElementById('qTitle').textContent = meta.name;
+// ===================== QUIZ =====================
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+function startQuiz(mapelId,mode,jumlah){
+  const meta=MAPEL_META.find(m=>m.id===mapelId);
+  let arr=getSoal(mapelId);
+  if(!arr.length){ showToast('Belum ada soal!'); return; }
+  arr=shuffle(arr).slice(0,jumlah||arr.length);
+  state.currentMapel=mapelId; state.mode=mode||'latihan'; state.jumlahSoal=jumlah||arr.length;
+  state.shuffled=arr; state.currentSoal=0;
+  state.benar=0; state.salah=0; state.poin=0; state.wrongList=[];
+  document.getElementById('qEmoji').textContent=meta.emoji;
+  const badge=state.mode==='ujian'?'<span class="mode-ujian-badge">📝 Ujian</span>':'';
+  document.getElementById('qTitle').innerHTML=meta.name+badge;
   showScreen('quiz-screen');
   renderQuestion();
 }
 
-function renderQuestion() {
-  const soal = state.shuffled[state.currentSoal];
-  const total = state.shuffled.length;
-  const pct = Math.round((state.currentSoal / total) * 100);
-  document.getElementById('progText').textContent = `Soal ${state.currentSoal+1} dari ${total}`;
-  document.getElementById('progPct').textContent = pct + '%';
-  document.getElementById('progFill').style.width = pct + '%';
-  document.getElementById('qSub').textContent = `${state.currentSoal+1} / ${total} soal`;
-  document.getElementById('scoreBenar').textContent = state.benar;
-  document.getElementById('scoreSalah').textContent = state.salah;
-  document.getElementById('scorePoin').textContent = state.poin;
-  document.getElementById('qNum').textContent = `Soal ${state.currentSoal+1}`;
-  document.getElementById('qText').textContent = soal.q;
-  const labels = ['A','B','C','D'];
-  document.getElementById('optsList').innerHTML = soal.opts.map((o,i)=>`
-    <button class="opt-btn" onclick="answer(${i})" id="qopt${i}">
-      <span class="opt-label">${labels[i]}</span><span>${o}</span>
-    </button>`).join('');
-  const fb = document.getElementById('feedbackCard');
-  fb.className='feedback-card'; fb.textContent='';
-  document.getElementById('nextBtn').className='next-btn';
-  const ba = document.getElementById('bombAnim');
-  ba.className='bomb-anim idle'; ba.textContent='💣';
-  document.getElementById('timerText').style.color='#854F0B';
-  state.answered = false;
-  startTimer();
-}
-
-function startTimer() {
-  clearInterval(state.timer);
-  state.timeLeft = 15;
-  updateTimerUI();
-  state.timer = setInterval(()=>{
-    state.timeLeft--;
-    updateTimerUI();
-    if(state.timeLeft<=0){ clearInterval(state.timer); if(!state.answered) autoWrong(); }
-  }, 1000);
-}
-
-function updateTimerUI() {
-  const t = state.timeLeft;
-  const bar = document.getElementById('timerBar');
-  const txt = document.getElementById('timerText');
-  const ba = document.getElementById('bombAnim');
-  bar.style.width = (t/15*100)+'%';
-  if(t>10){ bar.style.background='#52B788'; ba.textContent='💣'; ba.className='bomb-anim idle'; txt.style.color='#854F0B'; }
-  else if(t>5){ bar.style.background='#EF9F27'; ba.textContent='💣'; ba.className='bomb-anim idle'; txt.style.color='#993C1D'; }
-  else { bar.style.background='#E24B4A'; ba.textContent='🔴'; ba.className='bomb-anim warning'; txt.style.color='#A32D2D'; }
-  txt.textContent = `Sumbu menyala... ${t} detik!`;
-}
-
-function answer(idx) {
-  if(state.answered) return;
-  state.answered = true;
-  clearInterval(state.timer);
-  const soal = state.shuffled[state.currentSoal];
-  const correct = idx === soal.ans;
-  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
-  document.getElementById(`qopt${idx}`).classList.add(correct?'correct':'wrong');
-  if(!correct) document.getElementById(`qopt${soal.ans}`)?.classList.add('correct');
-  const ba = document.getElementById('bombAnim');
-  const fb = document.getElementById('feedbackCard');
-  if(correct){
-    state.benar++; state.poin+=10;
-    ba.textContent='🌟'; ba.className='bomb-anim';
-    document.getElementById('timerText').textContent='Mantap! Jawaban benar! 🎉';
-    fb.className='feedback-card show correct-fb';
-    fb.textContent='✓ Benar! '+soal.exp;
-    spawnConfetti();
-  } else {
-    state.salah++;
-    ba.textContent='💥'; ba.className='bomb-anim';
-    document.getElementById('timerText').textContent='BOOOM! Jawaban salah! 😅';
-    fb.className='feedback-card show wrong-fb';
-    fb.textContent='✗ Salah. '+soal.exp;
-    state.wrongList.push(soal);
-    spawnExplosion();
-  }
+function renderQuestion(){
+  const soal=state.shuffled[state.currentSoal];
+  const total=state.shuffled.length;
+  const pct=Math.round((state.currentSoal/total)*100);
+  document.getElementById('progText').textContent=`Soal ${state.currentSoal+1} dari ${total}`;
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('qSub').textContent=`${state.currentSoal+1} / ${total} soal`;
   document.getElementById('scoreBenar').textContent=state.benar;
   document.getElementById('scoreSalah').textContent=state.salah;
   document.getElementById('scorePoin').textContent=state.poin;
-  const nb = document.getElementById('nextBtn');
-  nb.className='next-btn show';
-  nb.textContent = state.currentSoal===state.shuffled.length-1 ? 'Lihat Hasil 🏆' : 'Soal Berikutnya 💥';
+  document.getElementById('qNum').textContent=`Soal ${state.currentSoal+1}`;
+  document.getElementById('qText').textContent=soal.q;
+  const labels=['A','B','C','D'];
+  document.getElementById('optsList').innerHTML=soal.opts.map((o,i)=>
+    `<button class="opt-btn" onclick="answer(${i})" id="qopt${i}"><span class="opt-label">${labels[i]}</span><span>${o}</span></button>`
+  ).join('');
+  const fb=document.getElementById('feedbackCard');
+  fb.className='feedback-card'; fb.textContent='';
+  document.getElementById('nextBtn').className='next-btn';
+  const ba=document.getElementById('bombAnim');
+  ba.className='bomb-anim idle'; ba.textContent='💣';
+  document.getElementById('timerText').style.color='#854F0B';
+  state.answered=false;
+  startTimer();
 }
 
-function autoWrong() {
-  state.answered=true; state.salah++;
-  const soal = state.shuffled[state.currentSoal];
+function startTimer(){
+  clearInterval(state.timer);
+  state.timeLeft=15; updateTimerUI();
+  state.timer=setInterval(()=>{ state.timeLeft--; updateTimerUI(); if(state.timeLeft<=0){ clearInterval(state.timer); if(!state.answered) autoWrong(); } },1000);
+}
+
+function updateTimerUI(){
+  const t=state.timeLeft;
+  const bar=document.getElementById('timerBar'),txt=document.getElementById('timerText'),ba=document.getElementById('bombAnim');
+  bar.style.width=(t/15*100)+'%';
+  if(t>10){ bar.style.background='#52B788'; ba.textContent='💣'; ba.className='bomb-anim idle'; txt.style.color='#854F0B'; }
+  else if(t>5){ bar.style.background='#EF9F27'; ba.textContent='💣'; ba.className='bomb-anim idle'; txt.style.color='#993C1D'; }
+  else { bar.style.background='#E24B4A'; ba.textContent='🔴'; ba.className='bomb-anim warning'; txt.style.color='#A32D2D'; }
+  txt.textContent=`Sumbu menyala... ${t} detik!`;
+}
+
+function answer(idx){
+  if(state.answered) return;
+  state.answered=true; clearInterval(state.timer);
+  const soal=state.shuffled[state.currentSoal];
+  const correct=idx===soal.ans;
   document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
-  document.getElementById(`qopt${soal.ans}`)?.classList.add('correct');
-  const ba = document.getElementById('bombAnim');
-  ba.textContent='💥'; ba.className='bomb-anim';
-  document.getElementById('timerText').textContent='BOOOM! Waktu habis! ⏰';
-  const fb = document.getElementById('feedbackCard');
-  fb.className='feedback-card show timeout-fb';
-  fb.textContent='⏰ Waktu habis! '+soal.exp;
-  state.wrongList.push(soal);
-  spawnExplosion();
+  document.getElementById(`qopt${idx}`).classList.add(correct?'correct':'wrong');
+  if(!correct) document.getElementById(`qopt${soal.ans}`)?.classList.add('correct');
+  const ba=document.getElementById('bombAnim'),fb=document.getElementById('feedbackCard');
+
+  if(correct){ state.benar++; state.poin+=10; } else { state.salah++; state.wrongList.push(soal); }
   document.getElementById('scoreBenar').textContent=state.benar;
   document.getElementById('scoreSalah').textContent=state.salah;
-  const nb = document.getElementById('nextBtn');
+  document.getElementById('scorePoin').textContent=state.poin;
+
+  if(state.mode==='ujian'){
+    ba.textContent=correct?'🌟':'💥'; ba.className='bomb-anim';
+    document.getElementById('timerText').textContent=correct?'Lanjut! ✓':'Lanjut...';
+    if(!correct) spawnExplosion(); else spawnConfetti();
+    setTimeout(()=>{ state.currentSoal++; if(state.currentSoal>=state.shuffled.length) showResult(); else renderQuestion(); },900);
+    return;
+  }
+
+  // Mode latihan: tampilkan feedback + tombol next
+  if(correct){
+    ba.textContent='🌟'; ba.className='bomb-anim';
+    document.getElementById('timerText').textContent='Mantap! Jawaban benar! 🎉';
+    fb.className='feedback-card show correct-fb'; fb.textContent='✓ Benar! '+soal.exp;
+    spawnConfetti();
+  } else {
+    ba.textContent='💥'; ba.className='bomb-anim';
+    document.getElementById('timerText').textContent='BOOOM! Jawaban salah! 😅';
+    fb.className='feedback-card show wrong-fb'; fb.textContent='✗ Salah. '+soal.exp;
+    spawnExplosion();
+  }
+  const nb=document.getElementById('nextBtn');
   nb.className='next-btn show';
-  nb.textContent = state.currentSoal===state.shuffled.length-1 ? 'Lihat Hasil 🏆' : 'Soal Berikutnya 💥';
+  nb.textContent=state.currentSoal===state.shuffled.length-1?'Lihat Hasil 🏆':'Soal Berikutnya 💥';
 }
 
-function nextQuestion() {
-  state.currentSoal++;
-  if(state.currentSoal>=state.shuffled.length) showResult();
-  else renderQuestion();
+function autoWrong(){
+  state.answered=true; state.salah++;
+  const soal=state.shuffled[state.currentSoal];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.getElementById(`qopt${soal.ans}`)?.classList.add('correct');
+  const ba=document.getElementById('bombAnim');
+  ba.textContent='💥'; ba.className='bomb-anim';
+  state.wrongList.push(soal); spawnExplosion();
+  document.getElementById('scoreBenar').textContent=state.benar;
+  document.getElementById('scoreSalah').textContent=state.salah;
+
+  if(state.mode==='ujian'){
+    document.getElementById('timerText').textContent='⏰ Waktu habis! Lanjut...';
+    setTimeout(()=>{ state.currentSoal++; if(state.currentSoal>=state.shuffled.length) showResult(); else renderQuestion(); },900);
+    return;
+  }
+  document.getElementById('timerText').textContent='BOOOM! Waktu habis! ⏰';
+  const fb=document.getElementById('feedbackCard');
+  fb.className='feedback-card show timeout-fb'; fb.textContent='⏰ Waktu habis! '+soal.exp;
+  const nb=document.getElementById('nextBtn');
+  nb.className='next-btn show';
+  nb.textContent=state.currentSoal===state.shuffled.length-1?'Lihat Hasil 🏆':'Soal Berikutnya 💥';
 }
+
+function nextQuestion(){ state.currentSoal++; if(state.currentSoal>=state.shuffled.length) showResult(); else renderQuestion(); }
 
 // ===================== RESULT =====================
-function showResult() {
+function showResult(){
   clearInterval(state.timer);
-  const total = state.shuffled.length;
-  const nilai = Math.round((state.benar/total)*100);
-  addTotalPoin(state.poin);
-  saveBest(state.currentMapel, nilai);
+  const total=state.shuffled.length;
+  const nilai=Math.round((state.benar/total)*100);
+  addTotalPoin(state.poin); saveBest(state.currentMapel,nilai);
   let stars='⭐',msg='',bomb='😢',title='Semangat ya!';
-  if(nilai>=80){stars='⭐⭐⭐';msg='Wow! Kamu luar biasa! Nilai sempurna! Pertahankan terus ya, Juara! 🏆';bomb='🏆';title='Luar biasa!';}
-  else if(nilai>=60){stars='⭐⭐';msg='Bagus banget! Kamu sudah berjuang keras. Sedikit lagi bisa sempurna! 💪';bomb='💪';title='Bagus banget!';}
-  else{stars='⭐';msg='Jangan menyerah ya! Baca lagi materinya, pasti bisa dapat nilai lebih tinggi! 🌱';bomb='💣';title='Ayo semangat!';}
+  if(nilai>=80){ stars='⭐⭐⭐'; msg='Wow! Kamu luar biasa! Pertahankan terus ya, Juara! 🏆'; bomb='🏆'; title='Luar biasa!'; }
+  else if(nilai>=60){ stars='⭐⭐'; msg='Bagus banget! Sedikit lagi bisa sempurna! 💪'; bomb='💪'; title='Bagus banget!'; }
+  else{ stars='⭐'; msg='Jangan menyerah! Baca lagi materinya, pasti bisa! 🌱'; bomb='💣'; title='Ayo semangat!'; }
   document.getElementById('resultBomb').textContent=bomb;
   document.getElementById('resultTitle').textContent=title;
   document.getElementById('resultScore').textContent=nilai;
@@ -598,16 +655,11 @@ function showResult() {
   document.getElementById('rBenar').textContent=state.benar;
   document.getElementById('rSalah').textContent=state.salah;
   document.getElementById('rPoin').textContent=state.poin;
-  const meta = MAPEL_META.find(m=>m.id===state.currentMapel);
   document.getElementById('resultMsg').textContent=msg;
-  const rev = document.getElementById('reviewSection');
+  const rev=document.getElementById('reviewSection');
   if(state.wrongList.length>0){
-    rev.innerHTML=`<div class="review-title">📝 Review Soal yang Salah (${state.wrongList.length} soal)</div>`
-      +state.wrongList.map(s=>`<div class="review-item">
-        <div class="review-q">${s.q}</div>
-        <div class="review-correct">✓ Jawaban benar: ${s.opts[s.ans]}</div>
-        <div class="review-exp">${s.exp}</div>
-      </div>`).join('');
+    rev.innerHTML=`<div class="review-title">📝 Review Soal Salah (${state.wrongList.length} soal)</div>`
+      +state.wrongList.map(s=>`<div class="review-item"><div class="review-q">${s.q}</div><div class="review-correct">✓ Jawaban benar: ${s.opts[s.ans]}</div><div class="review-exp">${s.exp}</div></div>`).join('');
   } else {
     rev.innerHTML='<div style="text-align:center;padding:16px;font-size:24px">🎯 Semua jawaban benar!</div>';
   }
@@ -615,122 +667,81 @@ function showResult() {
   showScreen('result-screen');
 }
 
-function retryQuiz() { startQuiz(state.currentMapel); }
+function retryQuiz(){ startQuiz(state.currentMapel,state.mode,state.jumlahSoal); }
 
 // ===================== ADMIN =====================
-function openAdminLogin() {
-  document.getElementById('adminModal').classList.add('show');
-  setTimeout(()=>document.getElementById('adminPassInput').focus(),100);
-}
-function closeAdminModal() {
-  document.getElementById('adminModal').classList.remove('show');
-  document.getElementById('adminPassInput').value='';
-}
-function checkAdmin() {
-  const val = document.getElementById('adminPassInput').value;
+function openAdminLogin(){ document.getElementById('adminModal').classList.add('show'); setTimeout(()=>document.getElementById('adminPassInput').focus(),100); }
+function closeAdminModal(){ document.getElementById('adminModal').classList.remove('show'); document.getElementById('adminPassInput').value=''; }
+function checkAdmin(){
+  const val=document.getElementById('adminPassInput').value;
   if(val===ADMIN_PASS){ closeAdminModal(); showAdminScreen(); }
-  else { document.getElementById('adminPassInput').value=''; document.getElementById('adminPassInput').placeholder='Salah! Coba lagi...'; setTimeout(()=>{document.getElementById('adminPassInput').placeholder='••••••';},2000); }
+  else{ document.getElementById('adminPassInput').value=''; document.getElementById('adminPassInput').placeholder='Salah! Coba lagi...'; setTimeout(()=>{document.getElementById('adminPassInput').placeholder='••••••';},2000); }
 }
-function showAdminScreen() {
-  renderAdminTabs();
-  renderAdminForm();
-  renderSoalList();
-  showScreen('admin-screen');
+function showAdminScreen(){ renderAdminTabs(); renderAdminForm(); renderSoalList(); showScreen('admin-screen'); }
+function renderAdminTabs(){
+  document.getElementById('adminTabs').innerHTML=MAPEL_META.map(m=>
+    `<button class="admin-tab${m.id===state.adminMapel?' active':''}" onclick="switchAdminMapel('${m.id}')">${m.emoji} ${m.name}</button>`
+  ).join('');
 }
-function renderAdminTabs() {
-  const tabs = document.getElementById('adminTabs');
-  tabs.innerHTML = MAPEL_META.map(m=>`
-    <button class="admin-tab${m.id===state.adminMapel?' active':''}" onclick="switchAdminMapel('${m.id}')">${m.emoji} ${m.name}</button>
-  `).join('');
+function switchAdminMapel(id){ state.adminMapel=id; renderAdminTabs(); renderSoalList(); clearAdminForm(); }
+function renderAdminForm(){
+  document.getElementById('optsGrid').innerHTML=['A','B','C','D'].map((l,i)=>
+    `<div class="opt-input-wrap"><span class="opt-letter">${l}</span><input class="form-input" id="opt${i}" placeholder="Pilihan ${l}" style="padding:9px 10px"><input type="radio" class="opt-radio" name="ansRadio" value="${i}" id="radio${i}"></div>`
+  ).join('');
 }
-function switchAdminMapel(id) {
-  state.adminMapel=id;
-  renderAdminTabs();
-  renderSoalList();
-  clearAdminForm();
-}
-function renderAdminForm() {
-  const grid = document.getElementById('optsGrid');
-  const labels=['A','B','C','D'];
-  grid.innerHTML=labels.map((l,i)=>`
-    <div class="opt-input-wrap">
-      <span class="opt-letter">${l}</span>
-      <input class="form-input" id="opt${i}" placeholder="Pilihan ${l}" style="padding:9px 10px">
-      <input type="radio" class="opt-radio" name="ansRadio" value="${i}" id="radio${i}">
-    </div>
-  `).join('');
-}
-function clearAdminForm() {
-  document.getElementById('inputQ').value='';
-  document.getElementById('inputExp').value='';
-  ['opt0','opt1','opt2','opt3'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+function clearAdminForm(){
+  document.getElementById('inputQ').value=''; document.getElementById('inputExp').value='';
+  [0,1,2,3].forEach(i=>{ const el=document.getElementById('opt'+i); if(el) el.value=''; });
   document.querySelectorAll('input[name="ansRadio"]').forEach(r=>r.checked=false);
 }
-function addSoal() {
-  const q = document.getElementById('inputQ').value.trim();
-  const exp = document.getElementById('inputExp').value.trim();
-  const opts = [0,1,2,3].map(i=>document.getElementById('opt'+i)?.value.trim()||'');
-  const ansEl = document.querySelector('input[name="ansRadio"]:checked');
-  if(!q){showToast('Pertanyaan tidak boleh kosong!');return;}
-  if(opts.filter(Boolean).length<2){showToast('Isi minimal 2 pilihan jawaban!');return;}
-  if(!ansEl){showToast('Pilih jawaban yang benar!');return;}
-  if(!exp){showToast('Isi penjelasan jawaban!');return;}
-  const soalArr = getSoal(state.adminMapel);
-  soalArr.push({q,opts,ans:parseInt(ansEl.value),exp});
-  saveSoal(state.adminMapel,soalArr);
-  clearAdminForm();
-  renderSoalList();
+function addSoal(){
+  const q=document.getElementById('inputQ').value.trim();
+  const exp=document.getElementById('inputExp').value.trim();
+  const opts=[0,1,2,3].map(i=>document.getElementById('opt'+i)?.value.trim()||'');
+  const ansEl=document.querySelector('input[name="ansRadio"]:checked');
+  if(!q){ showToast('Pertanyaan tidak boleh kosong!'); return; }
+  if(opts.filter(Boolean).length<2){ showToast('Isi minimal 2 pilihan jawaban!'); return; }
+  if(!ansEl){ showToast('Pilih jawaban yang benar!'); return; }
+  if(!exp){ showToast('Isi penjelasan jawaban!'); return; }
+  const arr=getSoal(state.adminMapel);
+  arr.push({q,opts,ans:parseInt(ansEl.value),exp});
+  saveSoal(state.adminMapel,arr); clearAdminForm(); renderSoalList();
   showToast('Soal berhasil disimpan! 💾');
 }
-function deleteSoal(idx) {
+function deleteSoal(idx){
   if(!confirm('Hapus soal ini?')) return;
-  const arr = getSoal(state.adminMapel);
-  arr.splice(idx,1);
-  saveSoal(state.adminMapel,arr);
-  renderSoalList();
-  showToast('Soal dihapus!');
+  const arr=getSoal(state.adminMapel); arr.splice(idx,1);
+  saveSoal(state.adminMapel,arr); renderSoalList(); showToast('Soal dihapus!');
 }
-function renderSoalList() {
-  const arr = getSoal(state.adminMapel);
-  const div = document.getElementById('soalList');
+function renderSoalList(){
+  const arr=getSoal(state.adminMapel);
+  const div=document.getElementById('soalList');
   if(!arr.length){ div.innerHTML='<div class="empty-state">Belum ada soal. Tambahkan soal di atas!</div>'; return; }
   div.innerHTML=arr.map((s,i)=>`
     <div class="soal-item">
-      <div style="flex:1">
-        <div class="soal-item-q">${i+1}. ${s.q}</div>
-        <div class="soal-item-ans">✓ ${s.opts[s.ans]}</div>
-      </div>
+      <div style="flex:1"><div class="soal-item-q">${i+1}. ${s.q}</div><div class="soal-item-ans">✓ ${s.opts[s.ans]}</div></div>
       <button class="soal-delete-btn" onclick="deleteSoal(${i})">Hapus</button>
     </div>`).join('');
 }
 
 // ===================== FX =====================
-function spawnConfetti() {
-  const colors=['#FF6B35','#FFD166','#06D6A0','#118AB2','#EF476F','#7F77DD','#06D6A0'];
+function spawnConfetti(){
+  const colors=['#FF6B35','#FFD166','#06D6A0','#118AB2','#EF476F','#7F77DD'];
   for(let i=0;i<22;i++){
-    const el=document.createElement('div');
-    el.className='particle';
+    const el=document.createElement('div'); el.className='particle';
     el.style.cssText=`left:${Math.random()*100}%;top:${10+Math.random()*20}%;width:${7+Math.random()*9}px;height:${7+Math.random()*9}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*0.5}s;animation-duration:${0.9+Math.random()*0.7}s`;
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),1600);
+    document.body.appendChild(el); setTimeout(()=>el.remove(),1600);
   }
 }
-function spawnExplosion() {
-  const el=document.createElement('div');
-  el.className='explosion-fx';
-  el.style.cssText=`top:40%;left:50%`;
-  el.textContent='💥';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),700);
+function spawnExplosion(){
+  const el=document.createElement('div'); el.className='explosion-fx';
+  el.style.cssText='top:40%;left:50%'; el.textContent='💥';
+  document.body.appendChild(el); setTimeout(()=>el.remove(),700);
 }
-function showToast(msg) {
-  const old=document.querySelector('.toast');
-  if(old) old.remove();
-  const t=document.createElement('div');
-  t.className='toast';
-  t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),2500);
+function showToast(msg){
+  const old=document.querySelector('.toast'); if(old) old.remove();
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2500);
 }
 
 // ===================== INIT =====================
